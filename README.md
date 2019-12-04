@@ -8,7 +8,23 @@
 
 
 ## API documentation
+* ###  Manager SPA
+	***
+	#### Endpoint:
+	` http://{manager-url}:{manager-port}/ `
+	#### Protocol:
+	` GET `
+	#### Body:
+	```json
+	```
 
+	#### Request example:
+	```sh
+	curl -v -X GET https://127.0.0.1:5000/
+	```
+
+	#### Response example:
+	> Return html web page
 * ###  Return statistics
 	***
 	#### Endpoint:

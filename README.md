@@ -120,8 +120,3 @@
 	#### Response example:
 
 	HTTP/ 1.1 200 OK
-
-<!--stackedit_data:
-eyJoaXN0b3J5IjpbMTM0Mzg4MDIwNiwtMTI3NTM2NTE4OCwtNz
-M5ODU5ODEyLC0xODM0Njk3NjExLC00MjAwMDYyMTNdfQ==
--->

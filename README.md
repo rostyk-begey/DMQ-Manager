@@ -25,6 +25,7 @@
 
 	#### Response example:
 	> Return html web page
+
 * ###  Return statistics
 	***
 	#### Endpoint:

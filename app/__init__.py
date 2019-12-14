@@ -22,5 +22,3 @@ db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
 
-#app.config.from_object('config.default.Config')
-#app.config.from_pyfile('instance/config.cfg')

@@ -55,19 +55,19 @@ module.exports = options => ({
         use: 'file-loader',
       },
       // use it if you need
-      // {
-      //   test: /\.svg$/,
-      //   use: [
-      //     {
-      //       loader: 'svg-url-loader',
-      //       options: {
-      //         // Inline files smaller than 10 kB
-      //         limit: 10 * 1024,
-      //         noquotes: true,
-      //       },
-      //     },
-      //   ],
-      // },
+      {
+        test: /\.svg$/,
+        use: [
+          {
+            loader: 'svg-url-loader',
+            options: {
+              // Inline files smaller than 10 kB
+              limit: 10 * 1024,
+              noquotes: true,
+            },
+          },
+        ],
+      },
       {
         test: /\.(jpg|png|gif)$/,
         use: [

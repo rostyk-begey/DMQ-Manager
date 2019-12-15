@@ -1,31 +1,22 @@
-import { PhotosLoadable } from 'app/modules/photos';
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { Nav } from '../nav';
+import Home from '../home';
 
-const Home = () => <h1>Home</h1>;
-const About = () => <h1>About</h1>;
+import 'c3/c3.css';
+import 'tabler-react/dist/Tabler.css';
 
-export class App extends Component {
-  componentDidMount = () => {
-    const { getProfile } = this.props;
+export const App = props => {
+  const { getProfile } = props;
+
+  useEffect(() => {
     getProfile();
-  };
+  }, []);
 
-  render() {
-    const { profileData } = this.props;
-    return (
-      <>
-        <Nav profileData={profileData} />
-
-        <div className="container">
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route path="/photos" component={PhotosLoadable} />
-            <Route path="/about" component={About} />
-          </Switch>
-        </div>
-      </>
-    );
-  }
-}
+  return (
+    <div className="page">
+      <Switch>
+        <Route exact path="/" component={Home} />
+      </Switch>
+    </div>
+  );
+};

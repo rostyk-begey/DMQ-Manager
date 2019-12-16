@@ -8,6 +8,7 @@ from flask_jwt_extended import (
 )
 import datetime
 from instance.config import *
+from .routes.views import views
 
 
 app = Flask(__name__)
@@ -22,3 +23,4 @@ db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
 
+app.register_blueprint(views)

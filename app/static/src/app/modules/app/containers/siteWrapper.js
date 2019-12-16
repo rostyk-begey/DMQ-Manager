@@ -1,9 +1,9 @@
-import { App } from 'app/modules/app/components/app';
+import { SiteWrapper } from 'app/modules/app/components/siteWrapper';
 import {
   selectAppProfileData,
   selectAuthToken,
 } from 'app/modules/app/selectors';
-import { getProfile } from 'app/modules/app/thunks';
+import { authLogout } from 'app/modules/app/thunks';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
@@ -15,10 +15,10 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = {
-  getProfile,
+  authLogout,
 };
 
 export default compose(
   withRouter, // must go before connect
   connect(mapStateToProps, mapDispatchToProps),
-)(App);
+)(SiteWrapper);

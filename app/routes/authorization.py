@@ -20,17 +20,17 @@ def login():
                 'access_token': access,
                 'refresh_token': refresh
             }
-            return jsonify(data), 200
+            return jsonify(data), 201
     except Exception as e:
         return 'Bad credentials', 403
 
 
 @auth.route('/refresh', methods=['POST'])
 def validate():
-    if not request.json['refresh_token']:
+    if not request.headers['refresh_token']:
         abort(404)
     try:
-        token = request.json['refresh_token']
+        token = request.headers['refresh_token']
         access, refresh = User().refresh_token(token)
         data = {
             'access_token': access,
@@ -47,13 +47,12 @@ def register():
         abort(404)
 
     try:
-        permissions = User().verify_token(request.json['access_token'])
-        if permissions['admin']:
-            payload = request.json['user']
-            print(payload)
-            user = User(payload['username'], payload['password'], payload['connect_nodes'], payload['disconnect_nodes'],
-                        payload['create_queues'], payload['delete_queues'], payload['send_message'],
-                        payload['get_message'], payload['admin'])
+        token_permissions = User().verify_token(request.headers['access_token'])
+        if token_permissions['admin']:
+            permissions = request.json['permissions']
+            user = User(request.json['username'], request.json['password'], permissions['connect_nodes'],
+                        permissions['disconnect_nodes'], permissions['create_queues'], permissions['delete_queues'],
+                        permissions['send_message'], permissions['get_message'], permissions['admin'])
             db.session.add(user)
             db.session.commit()
             return 'User added', 200

@@ -3,6 +3,7 @@ import { Switch } from 'react-router-dom';
 import { AuthRoute, UnauthRoute } from 'react-router-auth';
 import { HomeLoadable } from 'app/modules/home';
 import { DataNodesLoadable } from 'app/modules/dataNodes';
+import { QueuesLoadable } from 'app/modules/queues';
 import Login from 'app/modules/auth/containers/login';
 
 import 'c3/c3.css';
@@ -27,6 +28,12 @@ export const App = ({ authToken, getDataNodes, getQueues }) => {
         <AuthRoute
           path="/data-nodes"
           component={DataNodesLoadable}
+          redirectTo="/login"
+          authenticated={authToken !== ''}
+        />
+        <AuthRoute
+          path="/queues"
+          component={QueuesLoadable}
           redirectTo="/login"
           authenticated={authToken !== ''}
         />

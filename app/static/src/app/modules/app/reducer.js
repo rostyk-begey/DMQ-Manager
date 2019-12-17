@@ -7,16 +7,6 @@ export const TYPE = constants('app', [
   'AUTH_SUCCESS',
   'AUTH_LOGOUT',
   'AUTH_ERROR',
-
-  'GET_QUEUES',
-  'GET_QUEUES_SUCCESS',
-  'GET_QUEUES_ERROR',
-  'CREATE_QUEUE',
-  'CREATE_QUEUE_SUCCESS',
-  'CREATE_QUEUE_ERROR',
-  'DELETE_QUEUE',
-  'DELETE_QUEUE_SUCCESS',
-  'DELETE_QUEUE_ERROR',
 ]);
 export const ACTION = actions(TYPE);
 
@@ -34,19 +24,6 @@ export default handleActions(
     [TYPE.GET_PROFILE]: setLoading,
     [TYPE.GET_PROFILE_SUCCESS]: getProfileSuccess,
     [TYPE.GET_PROFILE_ERROR]: setServerError,
-
-    /* QUEUES */
-    [TYPE.GET_QUEUES]: setLoading,
-    [TYPE.GET_QUEUES_SUCCESS]: getQueuesSuccess,
-    [TYPE.GET_QUEUES_ERROR]: setServerError,
-
-    [TYPE.CREATE_QUEUE]: setLoading,
-    [TYPE.CREATE_QUEUE_SUCCESS]: createQueueSuccess,
-    [TYPE.CREATE_QUEUE_ERROR]: setServerError,
-
-    [TYPE.DELETE_QUEUE]: setLoading,
-    [TYPE.DELETE_QUEUE_SUCCESS]: deleteQueueSuccess,
-    [TYPE.DELETE_QUEUE_ERROR]: setServerError,
 
     // /* USERS */
     // [TYPE.GET_USERS]: setLoading,
@@ -108,30 +85,6 @@ function authLogout(state) {
     isLoading: false,
     authToken: '',
     profileData: {},
-  };
-}
-
-function getQueuesSuccess(state, action) {
-  return {
-    ...state,
-    isLoading: false,
-    queues: action.payload,
-  };
-}
-
-function createQueueSuccess(state, action) {
-  return {
-    ...state,
-    isLoading: false,
-    queues: [...state.queues, action.payload],
-  };
-}
-
-function deleteQueueSuccess(state, { payload: { id: _id } }) {
-  return {
-    ...state,
-    isLoading: false,
-    queues: state.queues.filter(({ id }) => id !== _id),
   };
 }
 

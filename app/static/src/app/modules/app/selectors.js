@@ -10,6 +10,3 @@ export const selectAppProfileData = () =>
 
 export const selectAuthToken = () =>
   createSelector(selectApp, state => state.authToken);
-
-export const selectQueues = () =>
-  createSelector(selectApp, state => state.queues);

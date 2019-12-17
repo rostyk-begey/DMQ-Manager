@@ -25,6 +25,12 @@ const navBarItems = [
     LinkComponent: withRouter(NavLink),
   },
   {
+    value: 'Queues',
+    icon: 'database',
+    to: '/queues',
+    LinkComponent: withRouter(NavLink),
+  },
+  {
     icon: 'file-text',
     value: 'Documentation',
     to: '/documentation',
@@ -33,7 +39,7 @@ const navBarItems = [
 ];
 
 const accountDropdownProps = logoutFn => ({
-  avatarURL: '',
+  avatarURL: '/',
   name: 'Jane Pearson',
   description: 'Administrator',
   options: [

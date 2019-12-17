@@ -17,7 +17,13 @@ import {
 
 import C3Chart from 'react-c3js';
 
-export const Home = ({ dataNodes, queues, isLoading }) => {
+export const Home = ({
+  dataNodes,
+  queues,
+  isLoading,
+  getQueues,
+  getDataNodes,
+}) => {
   const [users, setUsers] = useState([]);
   useEffect(() => {
     setUsers([
@@ -36,13 +42,23 @@ export const Home = ({ dataNodes, queues, isLoading }) => {
     users,
   );
 
+  const refreshData = () => {
+    getQueues();
+    getDataNodes();
+  };
+
   return (
     <SiteWrapper>
       <Page.Content
         title={
           <>
             Dashboard{' '}
-            <Button size="sm" loading={isLoading} color="primary">
+            <Button
+              size="sm"
+              loading={isLoading}
+              color="primary"
+              onClick={refreshData}
+            >
               Refresh
             </Button>
           </>

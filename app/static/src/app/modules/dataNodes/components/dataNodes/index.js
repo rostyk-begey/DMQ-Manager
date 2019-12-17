@@ -18,7 +18,6 @@ import {
   Form,
 } from 'tabler-react';
 import C3Chart from 'react-c3js';
-import { deleteQueue } from '../../../app/thunks';
 
 const DataNodes = ({
   isLoading,

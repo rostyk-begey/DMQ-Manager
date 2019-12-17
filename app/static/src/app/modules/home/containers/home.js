@@ -3,8 +3,8 @@ import {
   selectAllDataNodes,
   selectDataNodesIsLoading,
 } from 'app/modules/dataNodes/selectors';
-import { selectQueues } from 'app/modules/app/selectors';
-import { getQueues } from 'app/modules/app/thunks';
+import { selectAllQueues } from 'app/modules/queues/selectors';
+import { getQueues } from 'app/modules/queues/thunks';
 import { getDataNodes } from 'app/modules/dataNodes/thunks';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -12,7 +12,7 @@ import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 
 const mapStateToProps = createStructuredSelector({
-  queues: selectQueues(),
+  queues: selectAllQueues(),
   dataNodes: selectAllDataNodes(),
   isLoading: selectDataNodesIsLoading(),
 });

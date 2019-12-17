@@ -1,26 +1,21 @@
 from flask import Flask, jsonify, request, abort
-from flask_sqlalchemy import SQLAlchemy
-from flask_bcrypt import Bcrypt
-from flask_jwt_extended import (
-    JWTManager, jwt_required, create_access_token,
-    jwt_refresh_token_required, create_refresh_token,
-    get_jwt_identity
-)
-import datetime
 from instance.config import *
+from .models.users import *
 from .routes.views import views
+from .routes.authorization import auth
 
 
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['JWT_PUBLIC_KEY'] = RSA_PUBLIC_KEY
-app.config['JWT_PRIVATE_KEY'] = RSA_PRIVATE_KEY
 
-jwt = JWTManager(app)
-db = SQLAlchemy(app)
-bcrypt = Bcrypt(app)
-jwt = JWTManager(app)
+
+db.init_app(app)
+bcrypt.init_app(app)
 
 app.register_blueprint(views)
+app.register_blueprint(auth)
+
+with app.app_context():
+    db.create_all()

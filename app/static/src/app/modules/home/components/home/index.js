@@ -17,28 +17,7 @@ import {
 
 import C3Chart from 'react-c3js';
 
-export const Home = props => {
-  const [dataNodes, setDataNodes] = useState([]);
-  useEffect(() => {
-    setDataNodes([
-      { host: '127.0.0.1', port: '5000' },
-      { host: '127.0.0.1', port: '5001' },
-      { host: '127.0.0.1', port: '5002' },
-      { host: '127.0.0.1', port: '5003' },
-      { host: '127.0.0.1', port: '5004' },
-      { host: '127.0.0.1', port: '5005' },
-    ]);
-  }, []);
-
-  const [queues, setQueues] = useState([]);
-  useEffect(() => {
-    setQueues([
-      { id: '0001', name: 'Queue 1' },
-      { id: '0002', name: 'Queue 2' },
-      { id: '0003', name: 'Queue 3' },
-    ]);
-  }, []);
-
+export const Home = ({ dataNodes, queues, isLoading }) => {
   const [users, setUsers] = useState([]);
   useEffect(() => {
     setUsers([
@@ -59,7 +38,16 @@ export const Home = props => {
 
   return (
     <SiteWrapper>
-      <Page.Content title="Dashboard">
+      <Page.Content
+        title={
+          <>
+            Dashboard{' '}
+            <Button size="sm" loading={isLoading} color="primary">
+              Refresh
+            </Button>
+          </>
+        }
+      >
         <Grid.Row>
           <Grid.Col sm={6} lg={3}>
             <StampCard
@@ -345,79 +333,6 @@ export const Home = props => {
                 />
               </Grid.Col>
             </Grid.Row>
-          </Grid.Col>
-        </Grid.Row>
-        <Grid.Row cards>
-          <Grid.Col width={12}>
-            <Card title="Invoices">
-              <Table
-                responsive
-                className="card-table table-vcenter text-nowrap"
-                headerItems={[
-                  { content: 'No.', className: 'w-1' },
-                  { content: 'Invoice Subject' },
-                  { content: 'Client' },
-                  { content: 'VAT No.' },
-                  { content: 'Created' },
-                  { content: 'Status' },
-                  { content: 'Price' },
-                  { content: null },
-                  { content: null },
-                ]}
-                bodyItems={[
-                  {
-                    key: '1',
-                    item: [
-                      {
-                        content: (
-                          <Text RootComponent="span" muted>
-                            001401
-                          </Text>
-                        ),
-                      },
-                      {
-                        content: (
-                          <a href="invoice.html" className="text-inherit">
-                            Design Works
-                          </a>
-                        ),
-                      },
-                      { content: 'Carlson Limited' },
-                      { content: '87956621' },
-                      { content: '15 Dec 2017' },
-                      {
-                        content: (
-                          <React.Fragment>
-                            <span className="status-icon bg-success" /> Paid
-                          </React.Fragment>
-                        ),
-                      },
-                      { content: '$887' },
-                      {
-                        alignContent: 'right',
-                        content: (
-                          <React.Fragment>
-                            <Button size="sm" color="secondary">
-                              Manage
-                            </Button>
-                            <div className="dropdown">
-                              <Button
-                                color="secondary"
-                                size="sm"
-                                isDropdownToggle
-                              >
-                                Actions
-                              </Button>
-                            </div>
-                          </React.Fragment>
-                        ),
-                      },
-                      { content: <Icon link name="edit" /> },
-                    ],
-                  },
-                ]}
-              />
-            </Card>
           </Grid.Col>
         </Grid.Row>
       </Page.Content>

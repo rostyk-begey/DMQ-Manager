@@ -16,6 +16,7 @@ import {
   StatsCard,
   Table,
   Form,
+  Dimmer,
 } from 'tabler-react';
 import C3Chart from 'react-c3js';
 
@@ -35,26 +36,32 @@ const Queues = ({ isLoading, queues, createQueue, deleteQueue }) => {
               </Card.Header>
 
               <Card.Body>
-                <Form.Group label="Name">
-                  <Form.InputGroup>
-                    <Form.Input
-                      placeholder="Queue name"
-                      type="text"
-                      onChange={({ target: { value } }) => {
-                        setName(value);
-                      }}
-                    />
-                  </Form.InputGroup>
-                </Form.Group>
-                <Button
-                  color="primary"
-                  RootComponent="button"
-                  loading={isLoading}
-                  onClick={addQueue}
-                >
-                  Add
-                </Button>
+                <Dimmer active={isLoading} loader>
+                  <Form.Group label="Name">
+                    <Form.InputGroup>
+                      <Form.Input
+                        placeholder="Queue name"
+                        type="text"
+                        onChange={({ target: { value } }) => {
+                          setName(value);
+                        }}
+                      />
+                    </Form.InputGroup>
+                  </Form.Group>
+                </Dimmer>
               </Card.Body>
+              <Card.Footer>
+                <Button.List align="right">
+                  <Button
+                    color="primary"
+                    RootComponent="button"
+                    disabled={isLoading}
+                    onClick={addQueue}
+                  >
+                    Add
+                  </Button>
+                </Button.List>
+              </Card.Footer>
             </Card>
           </Grid.Col>
           <Grid.Col width={9}>

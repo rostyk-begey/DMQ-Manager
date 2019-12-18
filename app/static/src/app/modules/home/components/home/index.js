@@ -215,9 +215,9 @@ export const Home = ({
                   </Table.Row>
                 </Table.Header>
                 <Table.Body>
-                  {dataNodes.map(({ host, port }) => (
-                    <Table.Row>
-                      <Table.Col className="w-1">{host}</Table.Col>
+                  {dataNodes.map(({ id, address, port }) => (
+                    <Table.Row key={id}>
+                      <Table.Col className="w-1">{address}</Table.Col>
                       <Table.Col alignContent="left">{port}</Table.Col>
                       <Table.Col className="w-1">
                         <Icon link name="trash" />

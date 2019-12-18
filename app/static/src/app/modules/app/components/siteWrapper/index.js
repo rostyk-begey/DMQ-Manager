@@ -31,6 +31,12 @@ const navBarItems = [
     LinkComponent: withRouter(NavLink),
   },
   {
+    value: 'Users',
+    icon: 'users',
+    to: '/users',
+    LinkComponent: withRouter(NavLink),
+  },
+  {
     icon: 'file-text',
     value: 'Documentation',
     to: '/documentation',

@@ -8,5 +8,8 @@ export const selectAppIsLoading = () =>
 export const selectAppProfileData = () =>
   createSelector(selectApp, state => state.profileData);
 
-export const selectAuthToken = () =>
-  createSelector(selectApp, state => state.authToken);
+export const selectAccessToken = () =>
+  createSelector(selectApp, state => state.accessToken);
+
+export const selectRefreshToken = () =>
+  createSelector(selectApp, state => state.refreshToken);

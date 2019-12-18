@@ -18,31 +18,23 @@ import {
 import C3Chart from 'react-c3js';
 
 export const Home = ({
+  users,
   dataNodes,
   queues,
   isLoading,
+  getUsers,
   getQueues,
   getDataNodes,
 }) => {
-  const [users, setUsers] = useState([]);
-  useEffect(() => {
-    setUsers([
-      { id: '0001', role: 'producer' },
-      { id: '0002', role: 'consumer' },
-      { id: '0003', role: 'producer' },
-    ]);
-  }, []);
-
-  const producers = useMemo(
-    () => users.filter(({ role }) => role === 'producer'),
-    users,
+  const producers = users.filter(({ permissions }) =>
+    permissions.includes('send_message'),
   );
-  const consumers = useMemo(
-    () => users.filter(({ role }) => role === 'consumer'),
-    users,
+  const consumers = users.filter(({ permissions }) =>
+    permissions.includes('get_message'),
   );
 
   const refreshData = () => {
+    getUsers();
     getQueues();
     getDataNodes();
   };

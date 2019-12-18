@@ -11,15 +11,16 @@ export const getProfile = () => dispatch => {
 export const authLogin = (login, password) => dispatch => {
   dispatch(ACTION.auth());
   return authApi(login, password)
-    .then(({ data }) => JSON.stringify(data))
-    .then(token => {
-      window.localStorage.setItem('token', token);
-      dispatch(ACTION.authSuccess(token));
+    .then(({ access_token, refresh_token }) => {
+      window.localStorage.setItem('access_token', access_token);
+      window.localStorage.setItem('refresh_token', refresh_token);
+      dispatch(ACTION.authSuccess({ access_token, refresh_token }));
     })
     .catch(error => dispatch(ACTION.authError(error)));
 };
 
 export const authLogout = () => dispatch => {
-  window.localStorage.setItem('token', '');
+  window.localStorage.setItem('access_token', '');
+  window.localStorage.setItem('refresh_token', '');
   dispatch(ACTION.authLogout());
 };

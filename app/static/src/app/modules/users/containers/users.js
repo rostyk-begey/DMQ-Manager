@@ -1,26 +1,32 @@
-import { SiteWrapper } from 'app/modules/app/components/siteWrapper';
+import Users from 'app/modules/users/components/users';
 import {
-  selectAppProfileData,
-  selectAccessToken,
-  selectRefreshToken,
-} from 'app/modules/app/selectors';
-import { authLogout } from 'app/modules/app/thunks';
+  selectAllUsers,
+  selectUsersIsLoading,
+} from 'app/modules/users/selectors';
+import {
+  getUsers,
+  createUser,
+  updateUser,
+  deleteUser,
+} from 'app/modules/users/thunks';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 
 const mapStateToProps = createStructuredSelector({
-  profileData: selectAppProfileData(),
-  accessToken: selectAccessToken(),
-  refreshToken: selectRefreshToken(),
+  isLoading: selectUsersIsLoading(),
+  users: selectAllUsers(),
 });
 
 const mapDispatchToProps = {
-  authLogout,
+  getUsers,
+  createUser,
+  updateUser,
+  deleteUser,
 };
 
 export default compose(
   withRouter, // must go before connect
   connect(mapStateToProps, mapDispatchToProps),
-)(SiteWrapper);
+)(Users);

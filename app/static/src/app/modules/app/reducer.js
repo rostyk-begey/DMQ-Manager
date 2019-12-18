@@ -14,7 +14,8 @@ export const initialState = {
   isLoading: false,
   serverError: null,
 
-  authToken: window.localStorage.getItem('token'),
+  accessToken: window.localStorage.getItem('access_token'),
+  refreshToken: window.localStorage.getItem('refresh_token'),
   profileData: {},
   queues: [],
 };
@@ -24,23 +25,6 @@ export default handleActions(
     [TYPE.GET_PROFILE]: setLoading,
     [TYPE.GET_PROFILE_SUCCESS]: getProfileSuccess,
     [TYPE.GET_PROFILE_ERROR]: setServerError,
-
-    // /* USERS */
-    // [TYPE.GET_USERS]: setLoading,
-    // [TYPE.GET_USERS_SUCCESS]: getUsersSuccess,
-    // [TYPE.GET_USERS_ERROR]: setServerError,
-    //
-    // [TYPE.CREATE_USER]: setLoading,
-    // [TYPE.CREATE_USER_SUCCESS]: createUserSuccess,
-    // [TYPE.CREATE_USER_ERROR]: setServerError,
-    //
-    // [TYPE.UPDATE_USER]: setLoading,
-    // [TYPE.UPDATE_USER_SUCCESS]: updateUserSuccess,
-    // [TYPE.UPDATE_USER_ERROR]: setServerError,
-    //
-    // [TYPE.DELETE_USER]: setLoading,
-    // [TYPE.DELETE_USER_SUCCESS]: deleteUserSuccess,
-    // [TYPE.DELETE_USER_ERROR]: setServerError,
 
     /* AUTH */
     [TYPE.AUTH]: setLoading,
@@ -71,11 +55,12 @@ function getProfileSuccess(state, action) {
   };
 }
 
-function authSuccess(state, action) {
+function authSuccess(state, { payload: { access_token, refresh_token } }) {
   return {
     ...state,
     isLoading: false,
-    authToken: action.payload,
+    accessToken: access_token,
+    refreshToken: refresh_token,
   };
 }
 
@@ -83,39 +68,8 @@ function authLogout(state) {
   return {
     ...state,
     isLoading: false,
-    authToken: '',
+    accessToken: '',
+    refreshToken: '',
     profileData: {},
-  };
-}
-
-function getUsersSuccess(state, action) {
-  return {
-    ...state,
-    isLoading: false,
-    user: action.payload,
-  };
-}
-
-function createUserSuccess(state, action) {
-  return {
-    ...state,
-    isLoading: false,
-    user: [...state.user, action.payload],
-  };
-}
-
-function updateUserSuccess(state, action) {
-  return {
-    ...state,
-    isLoading: false,
-    user: [...state.user, action.payload],
-  };
-}
-
-function deleteUserSuccess(state, { payload: { id: _id } }) {
-  return {
-    ...state,
-    isLoading: false,
-    user: state.user.filter(({ id }) => id !== _id),
   };
 }

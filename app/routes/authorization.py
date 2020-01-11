@@ -13,7 +13,7 @@ def login():
     try:
         username = request.json.get('username')
         password = request.json.get('password')
-        user = User.query.filter_by(username=username).first()
+        user = User.query.get_or_404(username)
         if user.verify_password(password):
             data = {
                 'access_token': create_access_token(identity=username),

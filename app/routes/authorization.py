@@ -1,13 +1,13 @@
-from .. import *
-from ..models.users import User, db
 from flask import Blueprint
+from app import *
+from app.helpers.JWTHelper import *
 
-auth = Blueprint('auth', __name__)
+auth = Blueprint('auth', __name__, url_prefix='/api/auth')
 
 
 @auth.route('/login', methods=["POST"])
 def login():
-    if not request.json:
+    if not request.json['username'] or not request.json['password']:
         abort(404)
 
     try:
@@ -15,48 +15,45 @@ def login():
         password = request.json.get('password')
         user = User.query.filter_by(username=username).first()
         if user.verify_password(password):
-            access, refresh = user.generate_tokens()
             data = {
-                'access_token': access,
-                'refresh_token': refresh
+                'access_token': create_access_token(identity=username),
+                'refresh_token': create_refresh_token(identity=username)
             }
-            return jsonify(data), 201
-    except Exception as e:
+            return jsonify(data), 200
         return 'Bad credentials', 403
+    except Exception as e:
+        print(e)
+        return 'Something went wrong', 404
 
 
 @auth.route('/refresh', methods=['POST'])
-def validate():
-    if not request.headers['refresh_token']:
-        abort(404)
+@jwt_refresh_token_required
+def refresh():
     try:
-        token = request.headers['refresh_token']
-        access, refresh = User().refresh_token(token)
+        username = get_jwt_identity()
         data = {
-            'access_token': access,
-            'refresh_token': refresh
+            'access_token': create_access_token(identity=username),
+            'refresh_token': create_refresh_token(identity=username)
         }
         return jsonify(data), 200
     except Exception as e:
         print(e)
+        return 'Something went wrong', 404
 
 
-@auth.route('/register', methods=['POST'])
-def register():
+@auth.route('/add_user', methods=['POST'])
+@permission_required('admin')
+def add_user():
     if not request.json:
         abort(404)
 
     try:
-        token_permissions = User().verify_token(request.headers['access_token'])
-        if token_permissions['admin']:
-            permissions = request.json['permissions']
-            user = User(request.json['username'], request.json['password'], permissions['connect_nodes'],
-                        permissions['disconnect_nodes'], permissions['create_queues'], permissions['delete_queues'],
-                        permissions['send_message'], permissions['get_message'], permissions['admin'])
-            db.session.add(user)
-            db.session.commit()
-            return 'User added', 200
-        else:
-            return 'You have no permission', 403
+        permissions = request.json['permissions']
+        user = User(request.json['username'], request.json['password'], permissions['connect_nodes'],
+                    permissions['disconnect_nodes'], permissions['create_queues'], permissions['delete_queues'],
+                    permissions['send_message'], permissions['get_message'], permissions['admin'])
+        user.save_to_bd()
+        return 'User added', 201
     except Exception as e:
-        abort(404)
+        print(e)
+        return 'Something went wrong', 404

@@ -30,7 +30,7 @@ app.register_blueprint(stats)
 app.register_blueprint(queues)
 
 
-@app.before_first_request
+@app.cli.command('create_db')
 def create_db():
     try:
         db.create_all()
@@ -38,7 +38,7 @@ def create_db():
         print(e)
 
 
-@app.cli.command('create-admin')
+@app.cli.command('add_admin')
 @click.argument('username')
 @click.argument('password')
 def create_admin(username, password):

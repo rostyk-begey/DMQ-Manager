@@ -2,7 +2,7 @@ from flask import Blueprint
 from app import *
 from app.helpers.JWTHelper import *
 
-auth = Blueprint('auth', __name__, url_prefix='/api/auth')
+auth = Blueprint('auth', __name__, url_prefix='/api')
 
 
 @auth.route('/login', methods=["POST"])
@@ -13,7 +13,7 @@ def login():
     try:
         username = request.json.get('username')
         password = request.json.get('password')
-        user = User.query.get_or_404(username)
+        user = User.query.filter_by(username=username).first_or_404()
         if user.verify_password(password):
             data = {
                 'access_token': create_access_token(identity=username),

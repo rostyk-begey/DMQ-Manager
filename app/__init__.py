@@ -1,4 +1,3 @@
-import click
 from flask import Flask, request, abort, jsonify
 from instance.config import *
 from app.helpers.JWTHelper import jwt
@@ -8,6 +7,7 @@ from .routes.get_users import get_users
 from .routes.nodes import nodes
 from .routes.queues import queues
 from .routes.statistics import stats
+from .cli.cli_commands import cli_commands
 
 app = Flask(__name__)
 
@@ -22,24 +22,4 @@ app.register_blueprint(get_users)
 app.register_blueprint(nodes)
 app.register_blueprint(stats)
 app.register_blueprint(queues)
-
-
-@app.cli.command('create_db')
-def create_db():
-    try:
-        db.create_all()
-    except Exception as e:
-        print(e)
-
-
-@app.cli.command('add_admin')
-@click.argument('username')
-@click.argument('password')
-def create_admin(username, password):
-    try:
-        user = User(username, password, connect_nodes=True, disconnect_nodes=True,
-                    create_queues=True, delete_queues=True, send_message=True,
-                    get_message=True, admin=True)
-        user.save_to_bd()
-    except Exception as e:
-        print(e)
+app.register_blueprint(cli_commands)

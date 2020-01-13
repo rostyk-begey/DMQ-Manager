@@ -53,7 +53,7 @@ def add_user():
                     permissions['disconnect_nodes'], permissions['create_queues'], permissions['delete_queues'],
                     permissions['send_message'], permissions['get_message'], permissions['admin'])
         user.save_to_bd()
-        return 'User added', 201
+        return 'New user created', 201
     except Exception as e:
         print(e)
         return 'Something went wrong', 404

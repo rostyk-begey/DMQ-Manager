@@ -11,13 +11,7 @@ from .routes.statistics import stats
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URI
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['JWT_ALGORITHM'] = 'RS256'
-app.config['JWT_PRIVATE_KEY'] = RSA_PRIVATE_KEY
-app.config['JWT_PUBLIC_KEY'] = RSA_PUBLIC_KEY
-app.config['JWT_HEADER_TYPE'] = ''
-app.config['JWT_USER_CLAIMS'] = 'permissions'
+app.config.from_object('config.development.DevelopmentConfig')
 
 db.init_app(app)
 bcrypt.init_app(app)

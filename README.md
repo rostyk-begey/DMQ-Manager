@@ -5,6 +5,7 @@
    * Display WEB page with statistics
    * Create queues on all Data Nodes
    * Delete queues on all Data Nodes
+   * Authorization
 
 
 ## API documentation
@@ -131,7 +132,8 @@
 
 	#### Request example:
 	```sh
-	curl -v -X DELETE https://127.0.0.1:5000/queues/1234/
+    curl -v -X DELETE http://localhost:5000/queues/1234/
+    -H 'Authorization: {access token}'
 	```
 
 	#### Response example:
@@ -153,7 +155,7 @@
     ```
 	#### Request example:
 	```sh
-    curl -v -X POST 'http://localhost:5000/api/login' \
+    curl -v -X POST http://localhost:5000/api/login \
     -H 'Content-Type: application/json' \
     -H 'Accept: application/json' \
     -d '{
@@ -185,7 +187,7 @@
 
 	#### Request example:
 	```sh
-    curl -v -X POST 'http://localhost:5000/api/refresh' \
+    curl -v -X POST http://localhost:5000/api/refresh \
     -H 'Authorization: {refresh-token}' \
     -H 'Content-Type: application/json' \
     -H 'Accept: application/json' \
@@ -228,7 +230,7 @@
 
 	#### Request example:
 	```sh
-    curl -v -X POST 'http://localhost:5000/api/add_user' \
+    curl -v -X POST http://localhost:5000/api/add_user \
     -H 'Authorization: {access token}' \
     -H 'Content-Type: application/json' \
     -d '{

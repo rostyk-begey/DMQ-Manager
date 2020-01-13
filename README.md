@@ -59,6 +59,7 @@
 	        {
 		        "address": "127.0.0.1",
 		        "port": "5000",
+                 "cpu_load_percent": 0.6,
 	            "queues": [
 	                {
 	                    "id": "0001",
@@ -75,6 +76,7 @@
 	        {
 		        "address": "127.0.0.1",
 		        "port": "5001", 
+                "cpu_load_percent": 0.2,
 	            "queues": [
 	                {
 	                    "id": "0001",

@@ -7,3 +7,4 @@ instance/
 .idea/jsLibraryMappings.xml
 
 *.iws
+*.db

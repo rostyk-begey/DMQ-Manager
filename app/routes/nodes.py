@@ -20,8 +20,9 @@ def add_node():
 
     try:
         url = 'http://' + request.json['ip'] + ':' + str(request.json['port'])
-        ping = requests.get(url=url + '/ping')
-        if ping.text == 'pong':
+        rsa_key = {'rsa_public_key': RSA_PUBLIC_KEY}
+        connect_response = requests.post(url=url + '/connect', json=rsa_key)
+        if connect_response.status_code == 200:
             nodes_json = node_service.read()
             index = list(nodes_json.keys())
             node_id = 0 if not index else int(index[-1]) + 1
@@ -31,8 +32,6 @@ def add_node():
             }}
             nodes_json.update(node_info)
             node_service.write(nodes_json)
-            rsa_key = {'rsa_public_key': RSA_PUBLIC_KEY}
-            requests.post(url=url + '/connect', json=rsa_key)
             queues_json = queues_service.read()
             keys = list(queues_json.keys())
             header = {'Authorization': create_manager_token()}
@@ -46,7 +45,7 @@ def add_node():
                         'port': request.json['port']}
             return jsonify(response), 201
         else:
-            return "Data node does not respond", 404
+            return "Can not connect node", 404
     except Exception as e:
         print(e)
         return 'Something went wrong', 404

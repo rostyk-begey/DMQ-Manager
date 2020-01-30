@@ -4,7 +4,7 @@ import axios from 'axios';
 export const getProfileApi = () => axios.get(`${API_URL}users/1`);
 
 export const authApi = (login, password) =>
-  //axios.post(`${MANAGER_URL}/api/auth/login`, { username: login, password });
+  // axios.post(`${MANAGER_URL}/api/auth/login`, { username: login, password });
   {
     return Promise.resolve({
       access_token: 'access_token',

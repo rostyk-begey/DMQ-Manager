@@ -131,7 +131,7 @@ const DataNodes = ({
                   {dataNodes.map(
                     ({ id, address, port, cpu_load_percent: cpu }) => (
                       <Table.Row key={id}>
-                        <Table.Col>
+                        <Table.Col className="w-1">
                           <div>
                             {address}:{port}
                           </div>
@@ -140,11 +140,6 @@ const DataNodes = ({
                           <div className="clearfix">
                             <div className="float-left">
                               <strong>{(cpu * 100).toPrecision(4)} %</strong>
-                            </div>
-                            <div className="float-right">
-                              <Text.Small muted>
-                                Jun 11, 2015 - Jul 10, 2015
-                              </Text.Small>
                             </div>
                           </div>
                           <Progress size="xs">

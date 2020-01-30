@@ -31,7 +31,7 @@ export const usersApi = {
         ]);
       }, 1500);
     });
-    // return axios.get(`${MANAGER_URL}/data-nodes/${id}`, {}, this.config);
+    // return axios.get(`${MANAGER_URL}/api/users`, this.config);
   },
   create(user) {
     return new Promise(resolve => {
@@ -43,7 +43,7 @@ export const usersApi = {
         });
       }, 1500);
     });
-    // return axios.post(`${MANAGER_URL}/api/users/`, user);
+    // return axios.post(`${MANAGER_URL}/api/users`, user, this.config);
   },
   update(user) {
     return new Promise(resolve => {
@@ -51,7 +51,7 @@ export const usersApi = {
         resolve(user);
       }, 1500);
     });
-    // return axios.put(`${MANAGER_URL}/users/${user.id}`, user, this.config);
+    // return axios.put(`${MANAGER_URL}/api/users/${user.id}`, user, this.config);
   },
   delete(id) {
     return new Promise(resolve => {
@@ -59,6 +59,6 @@ export const usersApi = {
         resolve({ id, username: `User ${id}` });
       }, 1500);
     });
-    // return axios.delete(`${MANAGER_URL}/users/${id}`, {}, this.config);
+    // return axios.delete(`${MANAGER_URL}/api/users/${id}`, this.config);
   },
 };

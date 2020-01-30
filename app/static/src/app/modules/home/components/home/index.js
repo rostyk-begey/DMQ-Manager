@@ -39,6 +39,28 @@ export const Home = ({
     getDataNodes();
   };
 
+  const defaultStatistics = queues.map(({ name }) => [
+    name,
+    Math.floor(Math.random() * 10),
+  ]);
+
+  const [statistics, setStatistics] = useState(defaultStatistics);
+
+  const [{ address = '', port = '' } = {}, setDataNode] = useState(
+    dataNodes[0],
+  );
+
+  const selectDataNode = _id => {
+    setStatistics(defaultStatistics);
+    const dataNode = dataNodes.filter(({ id }) => id === _id).pop();
+    setDataNode(dataNode);
+  };
+  useEffect(() => {
+    if (dataNodes[0]) {
+      selectDataNode(dataNodes[0].id);
+    }
+  }, [dataNodes]);
+
   return (
     <SiteWrapper>
       <Page.Content
@@ -111,69 +133,18 @@ export const Home = ({
           <Grid.Col lg={6}>
             <Card>
               <Card.Header>
-                <Card.Title>Development Activity</Card.Title>
+                <Card.Title>
+                  Statistics -{' '}
+                  <span>
+                    {address}:{port}
+                  </span>
+                </Card.Title>
               </Card.Header>
               <C3Chart
                 style={{ height: '10rem' }}
                 data={{
-                  columns: [
-                    // each columns data
-                    [
-                      'data1',
-                      0,
-                      5,
-                      1,
-                      2,
-                      7,
-                      5,
-                      6,
-                      8,
-                      24,
-                      7,
-                      12,
-                      5,
-                      6,
-                      3,
-                      2,
-                      2,
-                      6,
-                      30,
-                      10,
-                      10,
-                      15,
-                      14,
-                      47,
-                      65,
-                      55,
-                    ],
-                  ],
-                  type: 'area-spline', // default type of chart
-                  groups: [['data1']],
-                  colors: {
-                    data1: colors['blue'],
-                  },
-                  names: {
-                    // name of each serie
-                    data1: 'Purchases',
-                  },
-                }}
-                axis={{
-                  y: {
-                    padding: {
-                      bottom: 0,
-                    },
-                    show: false,
-                    tick: {
-                      outer: false,
-                    },
-                  },
-                  x: {
-                    padding: {
-                      left: 0,
-                      right: 0,
-                    },
-                    show: false,
-                  },
+                  columns: statistics,
+                  type: 'bar', // default type of chart
                 }}
                 legend={{
                   position: 'inset',
@@ -185,13 +156,6 @@ export const Home = ({
                     step: 10,
                   },
                 }}
-                tooltip={{
-                  format: {
-                    title(x) {
-                      return '';
-                    },
-                  },
-                }}
                 padding={{
                   bottom: 0,
                   left: -1,
@@ -201,146 +165,44 @@ export const Home = ({
                   show: false,
                 }}
               />
-              <Table
-                cards
-                responsive
-                highlightRowOnHover
-                className="table-vcenter"
-              >
-                <Table.Header>
-                  <Table.Row>
-                    <Table.ColHeader>Host</Table.ColHeader>
-                    <Table.ColHeader>Port</Table.ColHeader>
-                    <Table.ColHeader />
-                  </Table.Row>
-                </Table.Header>
-                <Table.Body>
-                  {dataNodes.map(({ id, address, port }) => (
-                    <Table.Row key={id}>
-                      <Table.Col className="w-1">{address}</Table.Col>
-                      <Table.Col alignContent="left">{port}</Table.Col>
-                      <Table.Col className="w-1">
-                        <Icon link name="trash" />
-                      </Table.Col>
-                    </Table.Row>
-                  ))}
-                </Table.Body>
-              </Table>
             </Card>
           </Grid.Col>
           <Grid.Col md={6}>
-            <Alert type="primary">
-              <Alert.Link href="/documentation">
-                Read our documentation
-              </Alert.Link>{' '}
-              with code samples.
-            </Alert>
-            <Grid.Row>
-              <Grid.Col sm={6}>
-                <Card>
-                  <Card.Header>
-                    <Card.Title>Chart title</Card.Title>
-                  </Card.Header>
-                  <Card.Body>
-                    <C3Chart
-                      style={{ height: '12rem' }}
-                      data={{
-                        columns: [
-                          // each columns data
-                          ['data1', 63],
-                          ['data2', 37],
-                        ],
-                        type: 'donut', // default type of chart
-                        colors: {
-                          data1: colors['green'],
-                          data2: colors['green-light'],
-                        },
-                        names: {
-                          // name of each serie
-                          data1: 'Maximum',
-                          data2: 'Minimum',
-                        },
-                      }}
-                      legend={{
-                        show: false, //hide legend
-                      }}
-                      padding={{
-                        bottom: 0,
-                        top: 0,
-                      }}
-                    />
-                  </Card.Body>
-                </Card>
-              </Grid.Col>
-              <Grid.Col sm={6}>
-                <Card>
-                  <Card.Header>
-                    <Card.Title>Chart title</Card.Title>
-                  </Card.Header>
-                  <Card.Body>
-                    <C3Chart
-                      style={{ height: '12rem' }}
-                      data={{
-                        columns: [
-                          // each columns data
-                          ['data1', 63],
-                          ['data2', 44],
-                          ['data3', 12],
-                          ['data4', 14],
-                        ],
-                        type: 'pie', // default type of chart
-                        colors: {
-                          data1: colors['blue-darker'],
-                          data2: colors['blue'],
-                          data3: colors['blue-light'],
-                          data4: colors['blue-lighter'],
-                        },
-                        names: {
-                          // name of each serie
-                          data1: 'A',
-                          data2: 'B',
-                          data3: 'C',
-                          data4: 'D',
-                        },
-                      }}
-                      legend={{
-                        show: false, //hide legend
-                      }}
-                      padding={{
-                        bottom: 0,
-                        top: 0,
-                      }}
-                    />
-                  </Card.Body>
-                </Card>
-              </Grid.Col>
-            </Grid.Row>
-            <Grid.Row>
-              <Grid.Col width={6} sm={4} lg={4}>
-                <StatsCard
-                  layout={1}
-                  movement={3}
-                  total="27.3k"
-                  label="Followers"
-                />
-              </Grid.Col>
-              <Grid.Col width={6} sm={4} lg={4}>
-                <StatsCard
-                  layout={1}
-                  movement={-2}
-                  total="$95"
-                  label="Daily earnings"
-                />
-              </Grid.Col>
-              <Grid.Col width={6} sm={4} lg={4}>
-                <StatsCard
-                  layout={1}
-                  movement={-1}
-                  total="621"
-                  label="Products"
-                />
-              </Grid.Col>
-            </Grid.Row>
+            <Card>
+              <Card.Body>
+                <Table
+                  cards
+                  responsive
+                  highlightRowOnHover
+                  className="table-vcenter"
+                >
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.ColHeader>Host</Table.ColHeader>
+                      <Table.ColHeader>Port</Table.ColHeader>
+                      <Table.ColHeader />
+                    </Table.Row>
+                  </Table.Header>
+                  <Table.Body>
+                    {dataNodes.map(({ id, address, port }) => (
+                      <Table.Row key={id}>
+                        <Table.Col className="w-1">{address}</Table.Col>
+                        <Table.Col alignContent="left">{port}</Table.Col>
+                        <Table.Col className="w-1">
+                          <Button
+                            pill
+                            size="sm"
+                            onClick={() => selectDataNode(id)}
+                          >
+                            View
+                          </Button>
+                        </Table.Col>
+                      </Table.Row>
+                    ))}
+                  </Table.Body>
+                </Table>
+              </Card.Body>
+            </Card>
           </Grid.Col>
         </Grid.Row>
       </Page.Content>

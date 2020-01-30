@@ -13,5 +13,8 @@ const mapDispatchToProps = {
 
 export default compose(
   withRouter, // must go before connect
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
 )(Login);

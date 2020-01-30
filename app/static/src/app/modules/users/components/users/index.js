@@ -1,24 +1,81 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import SiteWrapper from 'app/modules/app/containers/siteWrapper';
 
 import {
-  Alert,
-  Text,
-  Progress,
-  Dropdown,
-  Avatar,
+  Tag,
   Card,
-  colors,
   Button,
   Grid,
   Icon,
   Page,
-  StatsCard,
   Table,
   Dimmer,
   Form,
 } from 'tabler-react';
-import C3Chart from 'react-c3js';
+
+const useUsers = (users, createUser, updateUser, deleteUser) => {
+  const [user, setCurrentUser] = useState({ permissions: [] });
+
+  const selectUser = useCallback(
+    _id => {
+      setCurrentUser(users.filter(({ id }) => id === _id).pop());
+    },
+    [users],
+  );
+
+  const isNewUser = user.id === undefined;
+
+  const cancelUpdate = () => setCurrentUser({});
+
+  const addUser = useCallback(() => {
+    if (user.username.length && user.password.length) {
+      createUser(user);
+      cancelUpdate();
+    }
+  }, [user]);
+
+  const modifyCurrentUser = useCallback(
+    data => {
+      setCurrentUser({ ...user, ...data });
+    },
+    [user],
+  );
+
+  const removeUser = useCallback(
+    id => {
+      deleteUser(id);
+      if (id === user.id) {
+        cancelUpdate();
+      }
+    },
+    [user],
+  );
+
+  const updateUsersPermissions = useCallback(
+    ({ target: { value, checked } }) => {
+      let permissions = new Set([...users.permissions]);
+      if (checked) {
+        permissions.add(value);
+      } else {
+        permissions.delete(value);
+      }
+      permissions = [...permissions];
+      modifyCurrentUser({ permissions });
+    },
+    [user],
+  );
+
+  return {
+    user,
+    isNewUser,
+    addUser,
+    updateUser,
+    removeUser,
+    selectUser,
+    cancelUpdate,
+    updateUsersPermissions,
+  };
+};
 
 const Users = ({ isLoading, users, createUser, updateUser, deleteUser }) => {
   const defaultPermissions = [
@@ -30,46 +87,16 @@ const Users = ({ isLoading, users, createUser, updateUser, deleteUser }) => {
     'get_message',
   ];
 
-  const [user, setCurrentUser] = useState({ permissions: [] });
-  console.log(user);
-
-  const selectUser = _id => {
-    setCurrentUser(users.filter(({ id }) => id === _id).pop());
-  };
-
-  const isNewUser = user.id === undefined;
-
-  const cancelUpdate = () => setCurrentUser({});
-
-  const addUser = () => {
-    if (user.username.length && user.password.length) {
-      createUser(user);
-      cancelUpdate();
-    }
-  };
-
-  const modifyCurrentUser = data => {
-    setCurrentUser({ ...user, ...data });
-  };
-
-  const removeUser = id => {
-    deleteUser(id);
-    if (id === user.id) {
-      cancelUpdate();
-    }
-  };
-
-  const updateUsersPermissions = ({ target: { value, checked } }) => {
-    let { permissions = [] } = user;
-    permissions = new Set(permissions);
-    if (checked) {
-      permissions.add(value);
-    } else {
-      permissions.delete(value);
-    }
-    permissions = [...permissions];
-    modifyCurrentUser({ permissions });
-  };
+  const {
+    user,
+    isNewUser,
+    addUser,
+    removeUser,
+    cancelUpdate,
+    selectUser,
+    updateUsersPermissions,
+    modifyCurrentUser,
+  } = useUsers(users, createUser, updateUser, deleteUser);
 
   const passwordInput = (
     <Form.Group label="Password">
@@ -130,7 +157,6 @@ const Users = ({ isLoading, users, createUser, updateUser, deleteUser }) => {
                         placeholder="User name"
                         type="text"
                         icon="user"
-                        value={user.username}
                         onChange={({ target: { value: username } }) => {
                           modifyCurrentUser({ username });
                         }}
@@ -195,19 +221,14 @@ const Users = ({ isLoading, users, createUser, updateUser, deleteUser }) => {
                       <Table.Col>
                         <div>{username}</div>
                       </Table.Col>
-                      <Table.Col alignContent="center">
-                        <Button.List align="left">
+                      <Table.Col alignContent="left">
+                        <Tag.List align="left">
                           {permissions.map(permission => (
-                            <Button
-                              pill
-                              key={permission}
-                              size="sm"
-                              color="secondary"
-                            >
+                            <Tag rounded key={permission}>
                               {permission}
-                            </Button>
+                            </Tag>
                           ))}
-                        </Button.List>
+                        </Tag.List>
                       </Table.Col>
                       <Table.Col className="w-1" alignContent="center">
                         <Icon link name="edit" onClick={() => selectUser(id)} />

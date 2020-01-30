@@ -81,7 +81,12 @@ function updateUserSuccess(state, { payload }) {
   return {
     ...state,
     isLoading: false,
-    data: [...state.data.filter(({ id }) => id !== payload.id), payload],
+    data: state.data.map(user => {
+      if (user.id === payload.id) {
+        return payload;
+      }
+      return user;
+    }),
   };
 }
 

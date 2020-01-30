@@ -3,6 +3,11 @@ import { MANAGER_URL } from 'app/constants';
 import axios from 'axios';
 
 export const dataNodeApi = {
+  config: {
+    headers: {
+      token: window.localStorage.getItem('access_token'),
+    },
+  },
   getAll() {
     return new Promise(resolve => {
       let dataNodes = [];
@@ -19,7 +24,10 @@ export const dataNodeApi = {
         resolve(dataNodes);
       }, 1500);
     });
-    // return axios.get(`${MANAGER_URL}/data-nodes/${id}`);
+    // return axios
+    //   .get(`${MANAGER_URL}/api/statistics`, {}, this.config)
+    //   .then(response => response.json())
+    //   .then(({ data_nodes }) => data_nodes);
   },
   create({ address, port }) {
     return new Promise(resolve => {
@@ -32,7 +40,11 @@ export const dataNodeApi = {
         });
       }, 1500);
     });
-    // return axios.post(`${MANAGER_URL}/data-nodes/`, dataNode);
+    // return axios.post(
+    //   `${MANAGER_URL}/api/data-nodes`,
+    //   { address, port },
+    //   this.config,
+    // );
   },
   delete(id) {
     return new Promise(resolve => {
@@ -45,6 +57,6 @@ export const dataNodeApi = {
         });
       }, 1500);
     });
-    // return axios.delete(`${MANAGER_URL}/data-nodes/${id}`);
+    // return axios.delete(`${MANAGER_URL}/api/data-nodes/${id}`, {}, this.config);
   },
 };

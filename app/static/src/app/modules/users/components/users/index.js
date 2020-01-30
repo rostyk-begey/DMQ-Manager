@@ -53,7 +53,7 @@ const useUsers = (users, createUser, updateUser, deleteUser) => {
 
   const updateUsersPermissions = useCallback(
     ({ target: { value, checked } }) => {
-      let permissions = new Set([...users.permissions]);
+      let permissions = new Set([...user.permissions]);
       if (checked) {
         permissions.add(value);
       } else {
@@ -73,6 +73,7 @@ const useUsers = (users, createUser, updateUser, deleteUser) => {
     removeUser,
     selectUser,
     cancelUpdate,
+    modifyCurrentUser,
     updateUsersPermissions,
   };
 };

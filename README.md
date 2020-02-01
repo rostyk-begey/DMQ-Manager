@@ -3,9 +3,13 @@
 ## Key features
    * Grab and Return statistic from all Data Nodes
    * Display WEB page with statistics
+   * Connect Data Node
+   * Disconnect Data Node
    * Create queues on all Data Nodes
    * Delete queues on all Data Nodes
-   * Authorization
+   * Login
+   * Refresh token
+   * Add user
 
 
 ## API documentation
@@ -55,6 +59,7 @@
 	        {
 		        "address": "127.0.0.1",
 		        "port": "5000",
+                 "cpu_load_percent": 0.6,
 	            "queues": [
 	                {
 	                    "id": "0001",
@@ -71,6 +76,7 @@
 	        {
 		        "address": "127.0.0.1",
 		        "port": "5001", 
+                "cpu_load_percent": 0.2,
 	            "queues": [
 	                {
 	                    "id": "0001",
@@ -87,10 +93,76 @@
 	    ]
 	}
 	```
+* ### Connect Data Node
+    ***
+    ### Endpoint:
+    ` http://{manager-url}:{manager-port}/api/connect_node `
+    ### Protocol:
+    ` POST `
+    ### Body
+    ```json
+    {
+        "ip": "{manager-ip}",
+        "port": "{manager-port}"
+    }
+    ```
+  
+    #### Request example:
+	```sh
+    curl -v -X POST http://localhost:5000/api/connect_node \
+    -H 'Content-Type: application/json' \
+    -H 'Authorization: {access token}' \
+    -H 'Accept: application/json' \ 
+    -d '{
+            "ip": "localhost",
+            "port": "5000"
+        }'
+	```
+ 
+    #### Response example:
+
+	HTTP/ 1.1 201 Created
+	
+	```json
+    {
+        "id": "1",
+        "ip": "localhost",
+        "port": "5000" 
+    }
+    ```
+ 
+ * ### Disconnect Data Node
+    ***
+    ### Endpoint:
+    ` http://{manager-url}:{manager-port}/api/disconnect_node/{node-id} `
+    ### Protocol:
+    ` DELETE `
+    ### Body
+    ```json
+    ```
+  
+    #### Request example:
+	```sh
+    curl -v -X DELETE http://localhost:5000/api/disconnect_node/1
+    -H 'Authorization: {access token}'
+	```
+ 
+    #### Response example:
+
+	HTTP/ 1.1 200 OK
+	
+	```json
+    {
+        "id": "1",
+        "ip": "localhost",
+        "port": "5000" 
+    }
+    ```
+
 * ### Create queue
 	***
 	#### Endpoint:
-	` http://{manager-url}:{manager-port}/queues/ `
+	` http://{manager-url}:{manager-port}/api/queues/ `
 	#### Protocol:
     ` POST `
 	#### Body:
@@ -102,12 +174,13 @@
 
 	#### Request example:
 	```sh
-	curl -v -X POST https://127.0.0.1:5000/queues \
-	-H 'Content-Type: application/json' \
-	-H 'Accept: application/json' \ 
-	-d '{
-	        "name": "queue1"
-	    }'
+    curl -v -X POST http://localhost:5000/api/queues \
+    -H 'Content-Type: application/json' \
+    -H 'Authorization: {access token}' \
+    -H 'Accept: application/json' \ 
+    -d '{
+            "name": "queue1"
+        }'
 	```
 
 	#### Response example:
@@ -123,7 +196,7 @@
 * ### Delete queue
 	***
 	#### Endpoint:
-	` http://{manager-url}:{manager-port}/queues/{queue-id}/ `
+	` http://{manager-url}:{manager-port}/api/queues/{queue-id}/ `
 	#### Protocol:
     ` DELETE `
 	#### Body:
@@ -132,7 +205,7 @@
 
 	#### Request example:
 	```sh
-    curl -v -X DELETE http://localhost:5000/queues/1234/
+    curl -v -X DELETE http://localhost:5000/api/queues/1234/
     -H 'Authorization: {access token}'
 	```
 
@@ -251,7 +324,3 @@
 	#### Response example:
 
 	HTTP/ 1.1 201 CREATED
-
-	```text
-	New user created
-	```
